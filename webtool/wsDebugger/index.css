@@ -1,0 +1,90 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+#left {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 300px;
+    height: 100%;
+    border: 1px solid #ccc;
+}
+#right{
+    position: absolute;
+    top: 0px;
+    left: 300px;
+    right: 0px;
+    bottom: 0px;
+    border: 1px solid #ccc;
+}
+#unAuthBox{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 50%;
+    width: 100%;
+}
+#authBox{
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    height: 50%;
+    width: 100%;
+}
+.header {
+    position: absolute;
+    top:0px;
+    left: 0px;
+    right: 0px;
+    height: 60px;
+    line-height: 60px;
+    background-color: #ebebeb;
+    font-weight: 700;
+    padding: 0 0 0 20px;
+    border-bottom: 1px solid #ccc;
+}
+.leftbox{
+    position: absolute;
+    bottom: 0px;
+    border-bottom: 1px solid #ccc;
+    padding: 0 10px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+.leftContent{
+    position: absolute;
+    top: 61px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    font-weight: 700;
+    padding: 0 0 0 20px;
+}
+
+#log {
+    position: absolute;
+    top: 61px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    padding: 0 10px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+.content {
+    background: #eee;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 12px;
+    width: fit-content;
+    display: inline-block;
+    white-space: pre-line;
+    text-align: left;
+}
+
+.toolbtn{
+    float: right;
+    margin: 20px 20px 20px 0px;
+}
