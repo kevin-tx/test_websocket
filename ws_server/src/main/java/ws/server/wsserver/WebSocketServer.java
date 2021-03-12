@@ -18,8 +18,8 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.*;
 
-@ServerEndpoint(value = "/wsproxy", configurator = CustomSpringConfigurator.class)
-@Component
+//@ServerEndpoint(value = "/wsproxy", configurator = CustomSpringConfigurator.class)
+//@Component
 public class WebSocketServer {
 
     private Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
@@ -82,7 +82,7 @@ public class WebSocketServer {
         public void run() {
             try {
                 logger.info("------working start: " + message);
-                Thread.sleep(2000);
+//                Thread.sleep(2000);
                 logger.info("------working end: " + message);
                 sendMessage(session, message);
             } catch (Exception e) {
