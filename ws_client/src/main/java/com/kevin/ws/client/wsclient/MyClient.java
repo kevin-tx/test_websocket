@@ -32,7 +32,7 @@ public class MyClient {
 
     @OnClose
     public void onClose(){
-        logger.info("Websocket closed");
+        logger.info("--------------------------Websocket closed");
     }
 
     /**
@@ -85,10 +85,10 @@ public class MyClient {
      * @param message 消息内容
      */
     public void send(String message){
-//        this.session.getAsyncRemote().sendText(message);
         try {
             this.session.getBasicRemote().sendText(message);
-        } catch (IOException e) {
+//            this.session.getAsyncRemote().sendText(message);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

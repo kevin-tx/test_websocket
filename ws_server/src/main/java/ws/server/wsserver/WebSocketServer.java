@@ -16,16 +16,14 @@ import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @ServerEndpoint(value = "/wsproxy", configurator = CustomSpringConfigurator.class)
 @Component
 public class WebSocketServer {
 
     private Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
+    ExecutorService fixedThreadPool = Executors.newFixedThreadPool(20);
 
     /**
      * 连接建立成功调用的方法
@@ -59,15 +57,38 @@ public class WebSocketServer {
      * @param message 客户端发送过来的消息
      */
     @OnMessage
-    public void onMessage(String message, Session session) throws IOException {
-        String msg = "receive from (" + WebsocketUtil.getRemoteAddress(session) + "):" + message;
-        logger.info(msg);
+    public void onMessage(String message, Session session) throws IOException, InterruptedException {
         try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            String msg = "receive from (" + WebsocketUtil.getRemoteAddress(session) + "):" + message;
+            logger.info(msg);
+            fixedThreadPool.execute(new MsgTask(msg, session));
         }
-        sendMessage(session, msg);
+        catch (Exception ex){
+            logger.error("",ex);
+        }
+    }
+
+    class MsgTask implements Runnable {
+
+        private String message;
+        private Session session;
+
+        public MsgTask(String message, Session session) {
+            this.message = message;
+            this.session = session;
+        }
+
+        @Override
+        public void run() {
+            try {
+                logger.info("------working start: " + message);
+                Thread.sleep(2000);
+                logger.info("------working end: " + message);
+                sendMessage(session, message);
+            } catch (Exception e) {
+                logger.error("",e);
+            }
+        }
     }
 
     /**
@@ -79,8 +100,11 @@ public class WebSocketServer {
      */
     public void sendMessage(Session session, String message) throws IOException {
         try {
-            session.getBasicRemote().sendText(message);
-            logger.info("send to (" + WebsocketUtil.getRemoteAddress(session) + ") -- " + message);
+            synchronized (session) {
+                session.getBasicRemote().sendText(message);
+//            session.getAsyncRemote().sendText(message);
+                logger.info("send to (" + WebsocketUtil.getRemoteAddress(session) + ") -- " + message);
+            }
         } catch (Exception ex) {
             logger.error("Send ws error", ex);
             throw ex;
